@@ -1,7 +1,7 @@
 from crewai.tools import BaseTool
 from typing import Type
 from pydantic import BaseModel, Field
-
+import qdrant_client
 
 class MyCustomToolInput(BaseModel):
     """Input schema for MyCustomTool."""
@@ -14,6 +14,20 @@ class MyCustomTool(BaseTool):
     )
     args_schema: Type[BaseModel] = MyCustomToolInput
 
-    def _run(self, argument: str) -> str:
+    def _run(self, query: str) -> str:
         # Implementation goes here
-        return "this is an example of a tool output, ignore it and move along."
+        search_result = qdrant_client.query(
+        collection_name="aparavi_knowledge",
+        query_text=query)
+
+        results = []
+        # Extract the list of ScoredPoint objects from the tuple
+        for point in search_result:
+            result = {
+                "metadata": point[1][0].payload.get("metadata", {}),
+                "context": point[1][0].payload.get("text", ""),
+                "distance": point[1][0].score,
+            }
+            results.append(result)
+
+        return search_result

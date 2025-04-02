@@ -18,7 +18,7 @@ def run():
     Run the crew.
     """
     inputs = {
-        'query': 'give me instructions for how to add a widget to the dashboard',
+        'query': 'what is the dog doing?',
     }
     
     try:

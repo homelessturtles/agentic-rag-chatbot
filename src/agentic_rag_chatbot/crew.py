@@ -3,6 +3,7 @@ from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import QdrantVectorSearchTool
 import os
 from dotenv import load_dotenv
+from openai import OpenAI
 
 # If you want to run a snippet of code before or after the crew starts,
 # you can use the @before_kickoff and @after_kickoff decorators
@@ -17,7 +18,7 @@ class AgenticRagChatbot():
     vector_search_tool = QdrantVectorSearchTool(
         collection_name="aparavi_knowledge",
         qdrant_url=os.getenv('QDRANT_URL'),
-        qdrant_api_key=os.getenv('QDRANT_API_KEY')
+        qdrant_api_key=os.getenv('QDRANT_API_KEY'),
     )
 
     agents_config = 'config/agents.yaml'
@@ -28,7 +29,7 @@ class AgenticRagChatbot():
         return Agent(
             config=self.agents_config['researcher'],
             verbose=True,
-            tools=[self.vector_search_tool]
+            tools=[self.vector_search_tool],
         )
 
     @agent

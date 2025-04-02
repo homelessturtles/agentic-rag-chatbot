@@ -5,9 +5,11 @@ description = "agentic-rag-chatbot using crewAI"
 authors = [{ name = "Your Name", email = "you@example.com" }]
 requires-python = ">=3.10,<3.13"
 dependencies = [
+    "crewai-tools>=0.38.1",
     "crewai[tools]>=0.108.0,<1.0.0",
+    "openai>=1.70.0",
     "pypdf>=3.0.0",
-    "qdrant-client>=1.6.0"
+    "qdrant-client>=1.6.0",
 ]
 
 [project.scripts]
