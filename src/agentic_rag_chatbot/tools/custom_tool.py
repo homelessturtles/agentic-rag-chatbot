@@ -1,5 +1,5 @@
 from crewai.tools import BaseTool
-from typing import Type, Any
+from typing import Type, Optional, Any
 from pydantic import BaseModel, Field
 try:
     from qdrant_client import QdrantClient
@@ -11,14 +11,13 @@ import openai
 import os
 import json
 
-COLLECTION_NAME = 'aparavi_knowledge'
-
 
 class QdrantToolSchema(BaseModel):
     """Input for Qdrant tool"""
     query: str = Field(..., description="The query to search retrieve relevant information from the Qdrant database. Pass only the query, not the question.")
 
 class QdrantVectorSearchTool(BaseTool):
+    model_config = {"arbitrary_types_allowed": True}
     client: QdrantClient = None
     name: str = "QdrantVectorSearchTool"
     description: str = "A tool to search the Qdrant database for relevant information on internal documents."
@@ -31,6 +30,9 @@ class QdrantVectorSearchTool(BaseTool):
         ...,
         description="The API key for the Qdrant server",
     )
+    collection_name: Optional[str] = None
+    query: Optional[str] = None
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         if QDRANT_AVAILABLE:
@@ -51,7 +53,7 @@ class QdrantVectorSearchTool(BaseTool):
             raise ValueError("QDRANT_URL or QDRANT_API_KEY is not set")
         
         search_result = self.client.query(
-        collection_name=COLLECTION_NAME,
+        collection_name=self.collection_name,
         query_text=query)
 
         results = []

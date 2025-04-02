@@ -1,20 +1,20 @@
 research_task:
   description: >
-    Research information related to: '{query}'. First assess whether the query is clear, specific, and answerable using our knowledge base. If the query is unclear, ambiguous, or potentially nonsensical, formulate 2-3 possible interpretations with varying assumptions. Use the search_knowledge_base tool to find relevant information for answerable aspects of the query. If you find no relevant information, explicitly state this rather than making up content.
+    Research information related to: '{query}'. Use the search_knowledge_base tool to find relevant information.
   expected_output: >
-    Detailed information from the knowledge base related to the query, with explicit source references. Include your assessment of the query's clarity and any alternative interpretations you considered. Clearly indicate any aspects of the query that couldn't be addressed with the available knowledge.
+    Detailed information from the knowledge base related to the query, with source references.
   agent: researcher
 
 analysis_task:
   description: >
-    Analyze the information provided by the researcher. First evaluate whether the researcher's interpretation of the query was reasonable. If the original query was unclear or nonsensical, assess whether the researcher's approach was appropriate. Identify the key points that answer the user's query or its reasonable interpretations. If information is missing, inconsistent, or unclear, delegate back to the researcher with specific questions. Never fabricate information to fill gaps.
+    Analyze the information provided by the researcher. Identify the key points that answer the user's query. If information is missing or unclear, delegate back to the researcher with specific questions.
   expected_output: >
-    A clear, accurate analysis that: 1) addresses the validity of the query itself, 2) evaluates how well the research addressed the query, and 3) synthesizes the information with proper source attribution. Explicitly note any unanswerable aspects or limitations in the available information.
+    A clear, accurate analysis of the information that directly addresses the user's query, making sure to include any sources references.
   agent: analyst
 
 coordination_task:
   description: >
-    Review the analysis and determine if it appropriately addresses the user's query given its clarity and answerability. If the query was unclear or nonsensical, ensure the response acknowledges this respectfully while providing the most helpful information possible. If crucial information is missing, coordinate to obtain it. Then craft a final response that is helpful, accurate, and easy to understand. If the query cannot be meaningfully answered, clearly explain why while offering alternative directions that might better serve the user.
+    Review the analysis and determine if it fully addresses the user's query. If not, identify what's missing and coordinate to get that information. Then craft a final response that is helpful, accurate, and easy to understand.
   expected_output: >
-    A final response that: 1) acknowledges any limitations in the query itself, 2) provides the most accurate and relevant information available, 3) clearly indicates any uncertainties or gaps, and 4) offers constructive suggestions when the original query cannot be fully addressed. The response should be conversational, helpful, and never fabricate information to appear more complete.
+    A final, comprehensive response to the user's query.
   agent: coordinator
