@@ -18,8 +18,7 @@ def run():
     Run the crew.
     """
     inputs = {
-        'topic': 'AI LLMs',
-        'current_year': str(datetime.now().year)
+        'query': 'give me instructions for how to add a widget to the dashboard',
     }
     
     try:

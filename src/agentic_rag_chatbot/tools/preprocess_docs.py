@@ -24,49 +24,49 @@ chunks = []
 chunk_metadata = []
 ids = []
 
-# # Split chunks at headings
-# chunker = RecursiveCharacterTextSplitter(
-#     chunk_size=1200,
-#     chunk_overlap=200,
-#     separators=["\n## ", "\n### ", "\n\n", "\n", ". ", " ", ""],
-# )
+# Split chunks at headings
+chunker = RecursiveCharacterTextSplitter(
+    chunk_size=1200,
+    chunk_overlap=200,
+    separators=["\n## ", "\n### ", "\n\n", "\n", ". ", " ", ""],
+)
 
-# # Process each PDF
-# for pdf_file in [f for f in os.listdir(pdf_directory) if f.endswith('.pdf')]:
-#     file_path = os.path.join(pdf_directory, pdf_file)
-#     print(f"Processing {file_path}")
+# Process each PDF
+for pdf_file in [f for f in os.listdir(pdf_directory) if f.endswith('.pdf')]:
+    file_path = os.path.join(pdf_directory, pdf_file)
+    print(f"Processing {file_path}")
 
-#     # Extract text from PDF
-#     text = ""
-#     reader = PdfReader(file_path)
-#     for page in reader.pages:
-#         text += page.extract_text() + "\n"
+    # Extract text from PDF
+    text = ""
+    reader = PdfReader(file_path)
+    for page in reader.pages:
+        text += page.extract_text() + "\n"
 
-#     # Chunk the document
-#     text_chunks = chunker.split_text(text)
+    # Chunk the document
+    text_chunks = chunker.split_text(text)
 
-#     # Store chunks with metadata
-#     for i, chunk in enumerate(text_chunks):
-#         ids.append(str(uuid.uuid4()))
-#         chunks.append(chunk)
-#         chunk_metadata.append({
-#             "source": pdf_file,
-#             "chunk_index": i
-#         })
+    # Store chunks with metadata
+    for i, chunk in enumerate(text_chunks):
+        ids.append(str(uuid.uuid4()))
+        chunks.append(chunk)
+        chunk_metadata.append({
+            "source": pdf_file,
+            "chunk_index": i
+        })
     
-#     print(pdf_file, ": ", len(text_chunks))
+    print(pdf_file, ": ", len(text_chunks))
 
 
-# qdrant_client.add(
-#     collection_name=COLLECTION_NAME,
-#     documents=chunks,
-#     metadata=chunk_metadata,
-#     ids=ids
-# )
+qdrant_client.add(
+    collection_name=COLLECTION_NAME,
+    documents=chunks,
+    metadata=chunk_metadata,
+    ids=ids
+)
 
 search_result = qdrant_client.query(
     collection_name="aparavi_knowledge",
-    query_text="Which integration is best for agents?"
+    query_text="What is workers subtab?"
 )
 print(search_result)
 
