@@ -18,7 +18,7 @@ def run():
     Run the crew.
     """
     inputs = {
-        'query': 'how do i log into aparavi',
+        'query': 'where should i eat tonight?',
     }
     
     try:
