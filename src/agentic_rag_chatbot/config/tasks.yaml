@@ -1,17 +1,20 @@
 research_task:
   description: >
-    Conduct a thorough research about {topic}
-    Make sure you find any interesting and relevant information given
-    the current year is {current_year}.
+    Research information related to: '{query}'. Use the search_knowledge_base tool to find relevant information.
   expected_output: >
-    A list with 10 bullet points of the most relevant information about {topic}
+    Detailed information from the knowledge base related to the query, with source references.
   agent: researcher
 
-reporting_task:
+analysis_task:
   description: >
-    Review the context you got and expand each topic into a full section for a report.
-    Make sure the report is detailed and contains any and all relevant information.
+    Analyze the information provided by the researcher. Identify the key points that answer the user's query. If information is missing or unclear, delegate back to the researcher with specific questions.
   expected_output: >
-    A fully fledged report with the main topics, each with a full section of information.
-    Formatted as markdown without '```'
-  agent: reporting_analyst
+    A clear, accurate analysis of the information that directly addresses the user's query.
+  agent: analyst
+
+coordination_task:
+  description: >
+    Review the analysis and determine if it fully addresses the user's query. If not, identify what's missing and coordinate to get that information. Then craft a final response that is helpful, accurate, and easy to understand.
+  expected_output: >
+    A final, comprehensive response to the user's query.
+  agent: coordinator
