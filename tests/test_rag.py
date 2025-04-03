@@ -54,7 +54,7 @@ test_cases = [
         input=ambiguous_query['query'],
         actual_output=ambiguous_output.raw,
         context=['''Aparavi's dashboard screen is designed to provide users with a comprehensive view of their data metrics. The dashboards are customizable and allow the user to see various widgets showing data metrics related to the files scanned by the system. Dashboards are broken into subtabs, such as Information and System.'''],
-        expected_output="A response answers in",
+        expected_output="A response answers generally what Aparavi does and provides additional ",
         retrieval_context=[ambiguous_output.tasks_output[0].raw]
     )
 ]
