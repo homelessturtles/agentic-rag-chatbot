@@ -1,44 +1,48 @@
-research_task:
+retrieval_task:
   description: >
-    Research information related to: '{query}'. FIRST, determine if the query is relevant to Aparavi's knowledge base.
-
-    If the query is CLEARLY unrelated to Aparavi (like "What's the weather?" or "Write me a poem"), respond with ONLY: "OUT_OF_SCOPE: This query is not related to Aparavi."
-
-    If the query is AMBIGUOUS (like "How does it work?" or "What are the features?"), treat it as IN-SCOPE and use the search_knowledge_base tool to search for general Aparavi information that might address common interpretations of the question. Try multiple search terms related to the ambiguous query to gather relevant information.
-
-    For clearly relevant queries, use the search_knowledge_base tool to find information that DIRECTLY answers the query.
+    Retrieve the most relevant information for: '{query}'. Your ONLY job is information retrieval.
+    
+    For ANY query (even ambiguous ones like "How does it work?"), use search_knowledge_base tool with multiple targeted search strategies:
+    1. Direct search with exact query terms
+    2. Expand with synonyms and related terms
+    
+    Report your search methodology and all results found, with their relevance scores.
+    DO NOT interpret the query or decide if it's in-scope - just retrieve information.
   expected_output: >
-    Either: 1) "OUT_OF_SCOPE: This query is not related to Aparavi." OR 
-    2) Relevant information from the knowledge base with source references. For ambiguous queries, include search results for multiple interpretations and note which searches were performed.
-  agent: researcher
+    A structured report of search results with relevance scores and methodology used.
+  agent: retriever
 
-analysis_task:
+domain_task:
   description: >
-    Analyze the information provided by the researcher. 
-
-    If the researcher determined the query is out-of-scope, respond with: "OUT_OF_SCOPE: [brief boundary statement]". 
-
-    If the query is ambiguous but potentially about Aparavi (like "How does it work?"), acknowledge the ambiguity while providing useful general information about Aparavi's functionality.
-
-    For specific in-scope queries, extract ONLY the key points that directly answer the user's question.
+    Evaluate query relevance to Aparavi and analyze retrieved information.
+    
+    First, determine if query is in-scope for Aparavi knowledge base.
+    - For out-of-scope queries: Note this and recommend boundary response
+    - For ambiguous queries: Identify possible interpretations
+    - For specific queries: Assess information quality and completeness
+    
+    Then identify information gaps - what's missing that would provide a better answer?
+    Finally, organize information into a logical structure for response.
   expected_output: >
-    Either: 1) "OUT_OF_SCOPE: [brief boundary statement]" OR 
-    2) For ambiguous queries: A recognition of the ambiguity with general information about relevant Aparavi functionality, OR
-    3) For specific queries: A concise response with facts that directly address the user's query.
-  agent: analyst
+    1. Query classification (out-of-scope/ambiguous/specific)
+    2. Assessment of information quality
+    3. Identification of information gaps
+    4. Logical organization of key points
+  agent: domain_expert
 
-coordination_task:
+ux_task:
   description: >
-    Review the analysis and deliver a response with maximum information density and zero filler language.
-
-    For clearly out-of-scope queries, respond ONLY with: "This system is designed specifically for Aparavi-related information. Please ask a question about Aparavi's products or services."
-
-    For ambiguous queries that could be about Aparavi, provide general information about the most likely interpretation while noting the ambiguity: "Your question could be interpreted in several ways. Assuming you're asking about [most likely interpretation], [provide answer]."
-
-    For specific in-scope queries, provide ONLY the specific information requested.
+    Craft the final user response based on domain expert's analysis.
+    
+    For out-of-scope: Create a brief, friendly boundary statement
+    For ambiguous: Acknowledge ambiguity and provide the most helpful interpretation
+    For specific: Format answer for maximum clarity and comprehension
+    
+    Focus on user experience principles:
+    - Progressive disclosure (most important info first)
+    - Clarity over comprehensiveness
+    - Appropriate formatting (lists/headings/etc.)
+    - Reading level appropriate for technical users
   expected_output: >
-    Direct answers with no preamble or filler content. 
-    For out-of-scope queries: a single-sentence boundary statement.
-    For ambiguous queries: acknowledgment of ambiguity with general helpful information.
-    For specific in-scope queries: only the exact information requested.
-  agent: coordinator
+    Final response formatted for optimal user experience, with appropriate tone, structure, and level of detail.
+  agent: ux_specialist

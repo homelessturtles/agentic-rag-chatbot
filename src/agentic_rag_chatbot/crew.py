@@ -26,43 +26,43 @@ class AgenticRagChatbot():
     tasks_config = 'config/tasks.yaml'
 
     @agent
-    def researcher(self) -> Agent:
+    def retriever(self) -> Agent:
         return Agent(
-            config=self.agents_config['researcher'],
+            config=self.agents_config['retriever'],
             verbose=True,
             tools=[self.vector_search_tool],
         )
 
     @agent
-    def analyst(self) -> Agent:
+    def domain_expert(self) -> Agent:
         return Agent(
-            config=self.agents_config['analyst'],
+            config=self.agents_config['domain_expert'],
             verbose=True
         )
 
     @agent
-    def coordinator(self) -> Agent:
+    def ux_specialist(self) -> Agent:
         return Agent(
-            config=self.agents_config['coordinator'],
+            config=self.agents_config['ux_specialist'],
             verbose=True
         )
 
     @task
-    def research_task(self) -> Task:
+    def retrieval_task(self) -> Task:
         return Task(
-            config=self.tasks_config['research_task'],
+            config=self.tasks_config['retrieval_task'],
         )
 
     @task
-    def reporting_task(self) -> Task:
+    def domain_task(self) -> Task:
         return Task(
-            config=self.tasks_config['analysis_task']
+            config=self.tasks_config['domain_task']
         )
     
     @task
-    def coordination_task(self) -> Task:
+    def ux_task(self) -> Task:
         return Task(
-            config=self.tasks_config['coordination_task']
+            config=self.tasks_config['ux_task']
         )
 
     @crew

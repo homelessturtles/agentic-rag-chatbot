@@ -20,7 +20,7 @@ out_scope_input = {
     'query': "What's the weather in New York today?"
 }
 ambiguous_query = {
-    'query': "How does it work?"
+    'query': "What does it do?"
 }
 
 # Get test case outputs
@@ -54,7 +54,7 @@ test_cases = [
         input=ambiguous_query['query'],
         actual_output=ambiguous_output.raw,
         context=['''Aparavi's dashboard screen is designed to provide users with a comprehensive view of their data metrics. The dashboards are customizable and allow the user to see various widgets showing data metrics related to the files scanned by the system. Dashboards are broken into subtabs, such as Information and System.'''],
-        expected_output="A response that seeks clarity while providing general information about how Aparavi dashboard",
+        expected_output="A response answers in",
         retrieval_context=[ambiguous_output.tasks_output[0].raw]
     )
 ]
