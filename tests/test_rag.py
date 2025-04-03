@@ -14,7 +14,7 @@ chatbot = AgenticRagChatbot()
 
 # Define test case inputs
 in_scope_input = {
-    'query': "What are Aparavi's data discovery capabilities?"
+    'query': "how do i add a widget in the dashboard?"
 }
 out_scope_input = {
     'query': "What's the weather in New York today?"

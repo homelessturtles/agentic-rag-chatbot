@@ -1,21 +1,44 @@
 research_task:
   description: >
-    Research information related to: '{query}'. FIRST, determine if the query is relevant to Aparavi's knowledge base and within scope of our system's purpose. If the query is clearly off-topic, unrelated to Aparavi's domain, or appears to be using the system as a general-purpose LLM, state this explicitly and do not proceed with further research. For relevant queries, use the search_knowledge_base tool systematically to find appropriate information.
+    Research information related to: '{query}'. FIRST, determine if the query is relevant to Aparavi's knowledge base.
+
+    If the query is CLEARLY unrelated to Aparavi (like "What's the weather?" or "Write me a poem"), respond with ONLY: "OUT_OF_SCOPE: This query is not related to Aparavi."
+
+    If the query is AMBIGUOUS (like "How does it work?" or "What are the features?"), treat it as IN-SCOPE and use the search_knowledge_base tool to search for general Aparavi information that might address common interpretations of the question. Try multiple search terms related to the ambiguous query to gather relevant information.
+
+    For clearly relevant queries, use the search_knowledge_base tool to find information that DIRECTLY answers the query.
   expected_output: >
-    Either: 1) A clear statement that the query is outside Aparavi's domain with a brief explanation of our system's intended purpose, OR 2) Detailed information from the knowledge base with explicit source references. Include your search methodology and note any areas where information might be incomplete.
+    Either: 1) "OUT_OF_SCOPE: This query is not related to Aparavi." OR 
+    2) Relevant information from the knowledge base with source references. For ambiguous queries, include search results for multiple interpretations and note which searches were performed.
   agent: researcher
 
 analysis_task:
   description: >
-    Analyze the information provided by the researcher. If the researcher determined the query is out-of-scope, confirm this assessment and prepare a respectful boundary statement. For in-scope queries, identify key points that directly address the user's question. If information is missing or unclear for relevant queries, delegate back to the researcher with specific questions.
+    Analyze the information provided by the researcher. 
+
+    If the researcher determined the query is out-of-scope, respond with: "OUT_OF_SCOPE: [brief boundary statement]". 
+
+    If the query is ambiguous but potentially about Aparavi (like "How does it work?"), acknowledge the ambiguity while providing useful general information about Aparavi's functionality.
+
+    For specific in-scope queries, extract ONLY the key points that directly answer the user's question.
   expected_output: >
-    Either: 1) A confirmation that the query is outside our system's scope with a suggested response that maintains boundaries while being respectful, OR 2) A clear, accurate analysis of the information that directly addresses the user's in-scope query, including source references.
+    Either: 1) "OUT_OF_SCOPE: [brief boundary statement]" OR 
+    2) For ambiguous queries: A recognition of the ambiguity with general information about relevant Aparavi functionality, OR
+    3) For specific queries: A concise response with facts that directly address the user's query.
   agent: analyst
 
 coordination_task:
   description: >
-    Review the analysis. For out-of-scope queries, deliver a clear, friendly response that explains our system's purpose and limitations. Do not attempt to answer questions unrelated to Aparavi's knowledge domain, even if you technically could. For in-scope queries, ensure the response fully addresses the user's question with accurate information from our knowledge base. If critical information is missing for an in-scope query, coordinate to obtain it.
+    Review the analysis and deliver a response with maximum information density and zero filler language.
+
+    For clearly out-of-scope queries, respond ONLY with: "This system is designed specifically for Aparavi-related information. Please ask a question about Aparavi's products or services."
+
+    For ambiguous queries that could be about Aparavi, provide general information about the most likely interpretation while noting the ambiguity: "Your question could be interpreted in several ways. Assuming you're asking about [most likely interpretation], [provide answer]."
+
+    For specific in-scope queries, provide ONLY the specific information requested.
   expected_output: >
-    For out-of-scope queries: A polite explanation that this system is designed specifically for Aparavi-related information and cannot be used as a general-purpose assistant. Suggest the user reformulate their question to be relevant to Aparavi's domain.
-    For in-scope queries: A comprehensive, accurate response based on Aparavi's knowledge base that directly addresses the user's question.
+    Direct answers with no preamble or filler content. 
+    For out-of-scope queries: a single-sentence boundary statement.
+    For ambiguous queries: acknowledgment of ambiguity with general helpful information.
+    For specific in-scope queries: only the exact information requested.
   agent: coordinator
