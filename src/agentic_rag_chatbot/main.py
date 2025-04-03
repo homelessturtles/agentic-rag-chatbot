@@ -18,7 +18,7 @@ def run():
     Run the crew.
     """
     inputs = {
-        'query': 'where should i eat tonight?',
+        'query': 'how do i use the vector search tool?',
     }
     
     try:
